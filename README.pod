@@ -1,0 +1,140 @@
+=head1 NAME
+
+tap.c - lightweight TAP output generator for C/C++ test suites
+
+=head1 SYNOPSIS
+
+tap.c is intended to make writing TAP-based tests in C/C++ as easy as possible.
+The resulting test programs can be used with test harnesses such as
+L<AutoMake|https://www.gnu.org/software/automake/manual/html_node/Using-the-TAP-test-protocol.html>
+and L<prove>.
+
+=head1 DESCRIPTION
+
+=over
+
+=item void tap_plan(int count)
+
+Generate TAP plan.  If the number of tests is unknown, use C<tap_done_testing>
+instead.
+
+=item void tap_skip_all(const char *reason, ...)
+
+Skip all tests.
+
+ #ifdef RUN_DEVELOPER_TESTS
+     run_developer_tests();
+ #else
+     tap_skip_all("set -DRUN_DEVELOPER_TESTS to run");
+ #endif
+
+=item void tap_done_testing(void)
+
+Indicate the end of testing for tests without a plan.  If the number of tests
+is known, use C<tap_plan> instead.
+
+=item void tap_todo(const char *reason)
+
+Indicate that the following tests are expected to fail.  Set to C<NULL> to
+disable.  B<Note:> the string passed is used as a diagnostic message and should
+not be free'd without updating C<tap_todo>.
+
+ tap_todo("make 1 equal 2");
+ tap_ok(1 == 2, "1 == 2"); // counted as success
+ tap_todo(NULL);
+ tap_ok(1 == 2, "1 == 2"); // counted as failure
+
+=item void tap_skip(int count, const char *reason, ...)
+
+Skip tests.
+
+ #ifdef BAZ
+     tap_ok(foo(), NULL);
+     tap_ok(bar(), NULL);
+ #else
+     tap_skip(2, "foo and bar require BAZ");
+ #endif 
+
+=item tap_bail(const char *reason, ...)
+
+Indicate an unrecoverable error.  It is up to the caller to actually exit the
+test.
+
+=item tap_diag(const char *message, ...)
+
+Print a diagnostic message.
+
+=item void tap_ok(int success, char *name, ...)
+
+Check test success.
+
+=item void tap_is_str(const char *got, const char *expected, const char *name, ...)
+
+Compare two strings with helpful diagnostic output.  C<NULL> safe.
+
+=item void tap_is_int(int got, int expected, const char *name, ...)
+
+Compare two integers with helpful diagnostic output.
+
+=item void tap_is_float(float got, float expected, float delta, const char *name, ...)
+
+Compare two floats with helpful diagnostic output.  Success requires that the
+difference between C<got> and C<expected> must be less than C<delta>.
+
+=back
+
+=head1 EXAMPLES
+
+ #include <stdlib.h>
+ #include <string.h>
+
+ #include "tap.c"
+ 
+ int main(int argc, char **argv) {
+ 	int i;
+ 	struct test {
+ 		const char *input;
+ 		size_t max;
+ 		const char *expected;
+ 	} tests[] = {
+ 		{ "foo", 4, "foo" },
+ 		{ "foo", 3, "foo" },
+ 		{ "foo", 2, "fo" },
+ 	};
+ 
+ 	tap_plan(sizeof(tests) / sizeof(struct test));
+ 	for(i = 0; i < sizeof(tests) / sizeof(struct test); ++i) {
+ 		char *output = strndup(tests[i].input, tests[i].max);
+ 		tap_is_str(output, tests[i].expected,
+ 			"strndup(%s, %d)", tests[i].input, tests[i].max);
+ 		free(output);
+ 	}
+
+ 	return 0;
+ }
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2014 Andrew Gregory andrew.gregory.8@gmail.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+=head1 SEE ALSO
+
+L<http://podwiki.hexten.net/TAP/TAP.html>, L<prove>, L<Test::More>
