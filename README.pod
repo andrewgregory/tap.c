@@ -64,19 +64,19 @@ test.
 
 Print a diagnostic message.
 
-=item void tap_ok(int success, char *name, ...)
+=item int tap_ok(int success, char *name, ...)
 
 Check test success.
 
-=item void tap_is_str(const char *got, const char *expected, const char *name, ...)
+=item int tap_is_str(const char *got, const char *expected, const char *name, ...)
 
 Compare two strings with helpful diagnostic output.  C<NULL> safe.
 
-=item void tap_is_int(int got, int expected, const char *name, ...)
+=item int tap_is_int(int got, int expected, const char *name, ...)
 
 Compare two integers with helpful diagnostic output.
 
-=item void tap_is_float(float got, float expected, float delta, const char *name, ...)
+=item int tap_is_float(float got, float expected, float delta, const char *name, ...)
 
 Compare two floats with helpful diagnostic output.  Success requires that the
 difference between C<got> and C<expected> must be less than C<delta>.

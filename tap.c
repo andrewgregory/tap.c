@@ -38,10 +38,10 @@ void tap_todo(const char *reason);
 void tap_skip(int count, const char *reason, ...);
 void tap_bail(const char *reason, ...);
 void tap_diag(const char *message, ...);
-void tap_ok(int success, const char *name, ...);
-void tap_is_float(float got, float expected, float delta, const char *name, ...);
-void tap_is_int(int got, int expected, const char *name, ...);
-void tap_is_str(const char *got, const char *expected, const char *name, ...);
+int tap_ok(int success, const char *name, ...);
+int tap_is_float(float got, float expected, float delta, const char *name, ...);
+int tap_is_int(int got, int expected, const char *name, ...);
+int tap_is_str(const char *got, const char *expected, const char *name, ...);
 
 void tap_plan(int test_count)
 {
@@ -156,12 +156,13 @@ static void _tap_vok(int success, const char *name, va_list args)
         va_end(args); \
     } while(0)
 
-void tap_ok(int success, const char *name, ...)
+int tap_ok(int success, const char *name, ...)
 {
     _TAP_OK(success, name);
+    return success;
 }
 
-void tap_is_float(float got, float expected, float delta, const char *name, ...)
+int tap_is_float(float got, float expected, float delta, const char *name, ...)
 {
     float diff = (expected > got ? expected - got : got - expected);
     int match = diff < delta;
@@ -172,9 +173,10 @@ void tap_is_float(float got, float expected, float delta, const char *name, ...)
         tap_diag("delta    '%f'", diff);
         tap_diag("allowed  '%f'", delta);
     }
+    return match;
 }
 
-void tap_is_int(int got, int expected, const char *name, ...)
+int tap_is_int(int got, int expected, const char *name, ...)
 {
     int match = got == expected;
     _TAP_OK(match, name);
@@ -182,9 +184,10 @@ void tap_is_int(int got, int expected, const char *name, ...)
         tap_diag("expected '%d'", expected);
         tap_diag("got      '%d'", got);
     }
+    return match;
 }
 
-void tap_is_str(const char *got, const char *expected, const char *name, ...)
+int tap_is_str(const char *got, const char *expected, const char *name, ...)
 {
     int match;
     if(got && expected) {
@@ -197,6 +200,7 @@ void tap_is_str(const char *got, const char *expected, const char *name, ...)
         tap_diag("expected '%s'", expected);
         tap_diag("got      '%s'", got);
     }
+    return match;
 }
 
 #endif /* TAP_C */
