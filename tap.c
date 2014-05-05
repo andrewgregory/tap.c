@@ -20,8 +20,8 @@
  * IN THE SOFTWARE.
  */
 
-#ifndef __TAP_C
-#define __TAP_C
+#ifndef TAP_C
+#define TAP_C
 
 #include <string.h>
 #include <stdio.h>
@@ -200,4 +200,4 @@ void tap_is_str(const char *got, const char *expected, const char *name, ...)
     }
 }
 
-#endif /* __TAP_C */
+#endif /* TAP_C */
