@@ -22,7 +22,6 @@
 
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
 #include <stdarg.h>
 
 #ifndef __TAP_C
@@ -165,7 +164,7 @@ void tap_ok(int success, const char *name, ...)
 
 void tap_is_float(float got, float expected, float delta, const char *name, ...)
 {
-    float diff = fabs(expected - got);
+    float diff = (expected > got ? expected - got : got - expected);
     int match = diff < delta;
     _TAP_OK(match, name);
     if(!match) {
