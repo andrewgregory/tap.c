@@ -20,12 +20,12 @@
  * IN THE SOFTWARE.
  */
 
+#ifndef __TAP_C
+#define __TAP_C
+
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
-
-#ifndef __TAP_C
-#define __TAP_C
 
 int _tap_tests_run = 0;
 int _tap_tests_failed = 0;
