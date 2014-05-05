@@ -77,15 +77,17 @@ void tap_todo(const char *reason)
 
 void tap_skip(int count, const char *reason, ...)
 {
-    printf("ok %d # SKIP");
-    if(reason) {
-        va_list args;
-        fputs(" - ", stdout);
-        va_start(args, reason);
-        vprintf(reason, args);
-        va_end(args);
+    while(count--) {
+        printf("ok %d # SKIP", ++_tap_tests_run);
+        if(reason) {
+            va_list args;
+            fputs(" - ", stdout);
+            va_start(args, reason);
+            vprintf(reason, args);
+            va_end(args);
+        }
+        fputc('\n', stdout);
     }
-    fputc('\n', stdout);
 }
 
 void tap_bail(const char *reason, ...)
