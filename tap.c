@@ -31,6 +31,18 @@
 int _tap_tests_run = 0;
 int _tap_tests_failed = 0;
 
+void tap_plan(int test_count);
+void tap_skip_all(const char *reason, ...);
+void tap_done_testing(void);
+void tap_todo(const char *reason);
+void tap_skip(int count, const char *reason, ...);
+void tap_bail(const char *reason, ...);
+void tap_diag(const char *message, ...);
+void tap_ok(int success, const char *name, ...);
+void tap_is_float(float got, float expected, float delta, const char *name, ...);
+void tap_is_int(int got, int expected, const char *name, ...);
+void tap_is_str(const char *got, const char *expected, const char *name, ...);
+
 const char *_tap_todo = NULL;
 
 void tap_plan(int test_count)
