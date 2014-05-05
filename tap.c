@@ -110,7 +110,7 @@ void tap_diag(const char *message, ...)
     fputc('\n', stdout);
 }
 
-void _tap_vok(int success, const char *name, va_list args)
+static void _tap_vok(int success, const char *name, va_list args)
 {
     const char *result;
     if(success) {
