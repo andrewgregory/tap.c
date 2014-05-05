@@ -32,16 +32,24 @@ int _tap_tests_failed = 0;
 const char *_tap_todo = NULL;
 
 void tap_plan(int test_count);
-void tap_skip_all(const char *reason, ...);
+void tap_skip_all(const char *reason, ...)
+    __attribute__ ((format (printf, 1, 2)));
 void tap_done_testing(void);
 void tap_todo(const char *reason);
-void tap_skip(int count, const char *reason, ...);
-void tap_bail(const char *reason, ...);
-void tap_diag(const char *message, ...);
-int tap_ok(int success, const char *name, ...);
-int tap_is_float(float got, float expected, float delta, const char *name, ...);
-int tap_is_int(int got, int expected, const char *name, ...);
-int tap_is_str(const char *got, const char *expected, const char *name, ...);
+void tap_skip(int count, const char *reason, ...)
+    __attribute__ ((format (printf, 2, 3)));
+void tap_bail(const char *reason, ...)
+    __attribute__ ((format (printf, 1, 2)));
+void tap_diag(const char *message, ...)
+    __attribute__ ((format (printf, 1, 2)));
+int tap_ok(int success, const char *name, ...)
+    __attribute__ ((format (printf, 2, 3)));
+int tap_is_float(float got, float expected, float delta, const char *name, ...)
+    __attribute__ ((format (printf, 4, 5)));
+int tap_is_int(int got, int expected, const char *name, ...)
+    __attribute__ ((format (printf, 3, 4)));
+int tap_is_str(const char *got, const char *expected, const char *name, ...)
+    __attribute__ ((format (printf, 3, 4)));
 
 void tap_plan(int test_count)
 {
