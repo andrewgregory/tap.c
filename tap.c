@@ -110,11 +110,14 @@ void tap_skip(int count, const char *reason, ...)
 
 void tap_bail(const char *reason, ...)
 {
-    va_list args;
-    fputs("Bail out! ", stdout);
-    va_start(args, reason);
-    vprintf(reason, args);
-    va_end(args);
+    fputs("Bail out!", stdout);
+    if(reason) {
+        va_list args;
+        va_start(args, reason);
+        fputc(' ', stdout);
+        vprintf(reason, args);
+        va_end(args);
+    }
     fputc('\n', stdout);
 }
 
