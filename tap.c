@@ -176,8 +176,8 @@ int tap_is_float(float got, float expected, float delta, const char *name, ...)
     int match = diff < delta;
     _TAP_OK(match, name);
     if(!match) {
-        tap_diag("expected '%f'", expected);
         tap_diag("got      '%f'", got);
+        tap_diag("expected '%f'", expected);
         tap_diag("delta    '%f'", diff);
         tap_diag("allowed  '%f'", delta);
     }
@@ -189,8 +189,8 @@ int tap_is_int(int got, int expected, const char *name, ...)
     int match = got == expected;
     _TAP_OK(match, name);
     if(!match) {
-        tap_diag("expected '%d'", expected);
         tap_diag("got      '%d'", got);
+        tap_diag("expected '%d'", expected);
     }
     return match;
 }
@@ -205,8 +205,8 @@ int tap_is_str(const char *got, const char *expected, const char *name, ...)
     }
     _TAP_OK(match, name);
     if(!match) {
-        tap_diag("expected '%s'", expected);
         tap_diag("got      '%s'", got);
+        tap_diag("expected '%s'", expected);
     }
     return match;
 }
