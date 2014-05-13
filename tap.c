@@ -58,7 +58,7 @@ void tap_plan(int test_count)
 
 void tap_skip_all(const char *reason, ...)
 {
-    printf("1..0");
+    fputs("1..0 # SKIP", stdout);
     if(reason) {
         va_list args;
         va_start(args, reason);
