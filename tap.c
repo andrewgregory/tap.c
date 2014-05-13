@@ -99,7 +99,7 @@ void tap_skip(int count, const char *reason, ...)
         printf("ok %d # SKIP", ++_tap_tests_run);
         if(reason) {
             va_list args;
-            fputs(" - ", stdout);
+            fputc(' ', stdout);
             va_start(args, reason);
             vprintf(reason, args);
             va_end(args);
