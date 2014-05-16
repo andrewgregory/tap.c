@@ -33,6 +33,10 @@ int _tap_tests_run = 0;
 int _tap_tests_failed = 0;
 const char *_tap_todo = NULL;
 
+#define _tap_output stdout
+#define _tap_failure_output stderr
+#define _tap_todo_output stdout
+
 void tap_plan(int test_count);
 void tap_skip_all(const char *reason, ...)
     __attribute__ ((format (printf, 1, 2)));
@@ -55,20 +59,20 @@ int tap_is_str(const char *got, const char *expected, const char *name, ...)
 
 void tap_plan(int test_count)
 {
-    printf("1..%d\n", test_count);
+    fprintf(_tap_output, "1..%d\n", test_count);
 }
 
 void tap_skip_all(const char *reason, ...)
 {
-    fputs("1..0 # SKIP", stdout);
+    fputs("1..0 # SKIP", _tap_output);
     if(reason) {
         va_list args;
         va_start(args, reason);
-        fputc(' ', stdout);
-        vprintf(reason, args);
+        fputc(' ', _tap_output);
+        vfprintf(_tap_output, reason, args);
         va_end(args);
     }
-    fputc('\n', stdout);
+    fputc('\n', _tap_output);
 }
 
 void tap_done_testing(void)
@@ -98,39 +102,41 @@ void tap_todo(const char *reason)
 void tap_skip(int count, const char *reason, ...)
 {
     while(count--) {
-        printf("ok %d # SKIP", ++_tap_tests_run);
+        fprintf(_tap_output, "ok %d # SKIP", ++_tap_tests_run);
         if(reason) {
             va_list args;
-            fputc(' ', stdout);
             va_start(args, reason);
-            vprintf(reason, args);
+            fputc(' ', _tap_output);
+            vfprintf(_tap_output, reason, args);
             va_end(args);
         }
-        fputc('\n', stdout);
+        fputc('\n', _tap_output);
     }
 }
 
 void tap_bail(const char *reason, ...)
 {
-    fputs("Bail out!", stdout);
+    fputs("Bail out!", _tap_output);
     if(reason) {
         va_list args;
         va_start(args, reason);
-        fputc(' ', stdout);
-        vprintf(reason, args);
+        fputc(' ', _tap_output);
+        vfprintf(_tap_output, reason, args);
         va_end(args);
     }
-    fputc('\n', stdout);
+    fputc('\n', _tap_output);
 }
 
 void tap_diag(const char *message, ...)
 {
     va_list args;
-    fputs("# ", stdout);
     va_start(args, message);
-    vprintf(message, args);
+
+    fputs("# ", _tap_output);
+    vfprintf(_tap_output, message, args);
+    fputc('\n', _tap_output);
+
     va_end(args);
-    fputc('\n', stdout);
 }
 
 static void _tap_vok(int success, const char *name, va_list args)
@@ -144,22 +150,22 @@ static void _tap_vok(int success, const char *name, va_list args)
         if(!_tap_todo) ++_tap_tests_failed;
     }
 
-    printf("%s %d", result, ++_tap_tests_run);
+    fprintf(_tap_output, "%s %d", result, ++_tap_tests_run);
 
     if(_tap_todo) {
-        fputs(" # TODO", stdout);
+        fputs(" # TODO", _tap_output);
         if(*_tap_todo) {
-            fputc(' ', stdout);
-            fputs(_tap_todo, stdout);
+            fputc(' ', _tap_output);
+            fputs(_tap_todo, _tap_output);
         }
     }
 
     if(name) {
-        fputs(" - ", stdout);
-        vprintf(name, args);
+        fputs(" - ", _tap_output);
+        vfprintf(_tap_output, name, args);
     }
 
-    fputc('\n', stdout);
+    fputc('\n', _tap_output);
 }
 
 #define _TAP_OK(success, name) do { \
