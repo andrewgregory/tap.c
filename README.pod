@@ -62,7 +62,13 @@ test.
 
 =item void tap_diag(const char *message, ...)
 
-Print a diagnostic message.
+Print a diagnostic message.  Harnesses should suppress the message for tests
+marked with C<tap_todo>.
+
+=item void tap_note(const char *message, ...)
+
+Like C<tap_diag> except harnesses should hide the message unless run in verbose
+mode.  Useful for debugging the test itself.
 
 =item int tap_ok(int success, char *name, ...)
 

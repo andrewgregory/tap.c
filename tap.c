@@ -139,6 +139,18 @@ void tap_diag(const char *message, ...)
     va_end(args);
 }
 
+void tap_note(const char *message, ...)
+{
+    va_list args;
+    va_start(args, message);
+
+    fputs("# ", _tap_output);
+    vfprintf(_tap_output, message, args);
+    fputc('\n', _tap_output);
+
+    va_end(args);
+}
+
 static void _tap_vok(int success, const char *name, va_list args)
 {
     const char *result;
