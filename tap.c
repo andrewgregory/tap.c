@@ -125,16 +125,18 @@ void tap_bail(const char *reason, ...)
         va_end(args);
     }
     fputc('\n', _tap_output);
+    fflush(_tap_output);
 }
 
 void tap_diag(const char *message, ...)
 {
+    FILE *stream = _tap_todo ? _tap_todo_output : _tap_failure_output;
     va_list args;
     va_start(args, message);
 
-    fputs("# ", _tap_output);
-    vfprintf(_tap_output, message, args);
-    fputc('\n', _tap_output);
+    fputs("# ", stream);
+    vfprintf(stream, message, args);
+    fputc('\n', stream);
 
     va_end(args);
 }
