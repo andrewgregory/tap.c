@@ -60,6 +60,7 @@ int tap_is_str(const char *got, const char *expected, const char *name, ...)
 void tap_plan(int test_count)
 {
     fprintf(_tap_output, "1..%d\n", test_count);
+    fflush(_tap_output);
 }
 
 void tap_skip_all(const char *reason, ...)
@@ -73,6 +74,7 @@ void tap_skip_all(const char *reason, ...)
         va_end(args);
     }
     fputc('\n', _tap_output);
+    fflush(_tap_output);
 }
 
 void tap_done_testing(void)
@@ -112,6 +114,7 @@ void tap_skip(int count, const char *reason, ...)
         }
         fputc('\n', _tap_output);
     }
+    fflush(_tap_output);
 }
 
 void tap_bail(const char *reason, ...)
@@ -137,6 +140,7 @@ void tap_diag(const char *message, ...)
     fputs("# ", stream);
     vfprintf(stream, message, args);
     fputc('\n', stream);
+    fflush(stream);
 
     va_end(args);
 }
@@ -149,6 +153,7 @@ void tap_note(const char *message, ...)
     fputs("# ", _tap_output);
     vfprintf(_tap_output, message, args);
     fputc('\n', _tap_output);
+    fflush(_tap_output);
 
     va_end(args);
 }
@@ -180,6 +185,7 @@ static void _tap_vok(int success, const char *name, va_list args)
     }
 
     fputc('\n', _tap_output);
+    fflush(_tap_output);
 }
 
 #define _TAP_OK(success, name) do { \
