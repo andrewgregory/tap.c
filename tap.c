@@ -29,9 +29,9 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-int _tap_tests_run = 0;
-int _tap_tests_failed = 0;
-const char *_tap_todo = NULL;
+static int _tap_tests_run = 0;
+static int _tap_tests_failed = 0;
+static const char *_tap_todo = NULL;
 
 #define _tap_output stdout
 #define _tap_failure_output stderr
