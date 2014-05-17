@@ -171,17 +171,17 @@ static void _tap_vok(int success, const char *name, va_list args)
 
     fprintf(_tap_output, "%s %d", result, ++_tap_tests_run);
 
+    if(name) {
+        fputs(" - ", _tap_output);
+        vfprintf(_tap_output, name, args);
+    }
+
     if(_tap_todo) {
         fputs(" # TODO", _tap_output);
         if(*_tap_todo) {
             fputc(' ', _tap_output);
             fputs(_tap_todo, _tap_output);
         }
-    }
-
-    if(name) {
-        fputs(" - ", _tap_output);
-        vfprintf(_tap_output, name, args);
     }
 
     fputc('\n', _tap_output);
