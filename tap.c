@@ -48,14 +48,23 @@ void tap_bail(const char *reason, ...)
     __attribute__ ((format (printf, 1, 2)));
 void tap_diag(const char *message, ...)
     __attribute__ ((format (printf, 1, 2)));
-int tap_ok(int success, const char *name, ...)
-    __attribute__ ((format (printf, 2, 3)));
-int tap_is_float(float got, float expected, float delta, const char *name, ...)
+
+#define tap_ok(...) _tap_ok(__FILE__, __LINE__, __VA_ARGS__)
+#define tap_is_float(...) _tap_is_float(__FILE__, __LINE__, __VA_ARGS__)
+#define tap_is_int(...) _tap_is_int(__FILE__, __LINE__, __VA_ARGS__)
+#define tap_is_str(...) _tap_is_str(__FILE__, __LINE__, __VA_ARGS__)
+
+int _tap_ok(const char *file, int line, int success, const char *name, ...)
     __attribute__ ((format (printf, 4, 5)));
-int tap_is_int(int got, int expected, const char *name, ...)
-    __attribute__ ((format (printf, 3, 4)));
-int tap_is_str(const char *got, const char *expected, const char *name, ...)
-    __attribute__ ((format (printf, 3, 4)));
+int _tap_is_float(const char *file, int line,
+        float got, float expected, float delta, const char *name, ...)
+    __attribute__ ((format (printf, 6, 7)));
+int _tap_is_int(const char *file, int line,
+        int got, int expected, const char *name, ...)
+    __attribute__ ((format (printf, 5, 6)));
+int _tap_is_str(const char *file, int line,
+        const char *got, const char *expected, const char *name, ...)
+    __attribute__ ((format (printf, 5, 6)));
 
 void tap_plan(int test_count)
 {
@@ -158,7 +167,8 @@ void tap_note(const char *message, ...)
     va_end(args);
 }
 
-static void _tap_vok(int success, const char *name, va_list args)
+static void _tap_vok(const char *file, int line,
+        int success, const char *name, va_list args)
 {
     const char *result;
     if(success) {
@@ -186,22 +196,30 @@ static void _tap_vok(int success, const char *name, va_list args)
 
     fputc('\n', _tap_output);
     fflush(_tap_output);
+
+    if(!success) {
+        /* TODO add test name if available */
+        tap_diag("  Failed%s test at %s line %d.",
+                _tap_todo ? " (TODO)" : "", file, line);
+    }
 }
 
 #define _TAP_OK(success, name) do { \
         va_list args; \
         va_start(args, name); \
-        _tap_vok(success, name, args); \
+        _tap_vok(file, line, success, name, args); \
         va_end(args); \
     } while(0)
 
-int tap_ok(int success, const char *name, ...)
+int _tap_ok(const char *file, int line,
+        int success, const char *name, ...)
 {
     _TAP_OK(success, name);
     return success;
 }
 
-int tap_is_float(float got, float expected, float delta, const char *name, ...)
+int _tap_is_float(const char *file, int line,
+        float got, float expected, float delta, const char *name, ...)
 {
     float diff = (expected > got ? expected - got : got - expected);
     int match = diff < delta;
@@ -215,7 +233,8 @@ int tap_is_float(float got, float expected, float delta, const char *name, ...)
     return match;
 }
 
-int tap_is_int(int got, int expected, const char *name, ...)
+int _tap_is_int(const char *file, int line,
+        int got, int expected, const char *name, ...)
 {
     int match = got == expected;
     _TAP_OK(match, name);
@@ -226,7 +245,8 @@ int tap_is_int(int got, int expected, const char *name, ...)
     return match;
 }
 
-int tap_is_str(const char *got, const char *expected, const char *name, ...)
+int _tap_is_str(const char *file, int line,
+        const char *got, const char *expected, const char *name, ...)
 {
     int match;
     if(got && expected) {
@@ -241,5 +261,7 @@ int tap_is_str(const char *got, const char *expected, const char *name, ...)
     }
     return match;
 }
+
+#undef _TAP_OK
 
 #endif /* TAP_C */
