@@ -49,6 +49,10 @@ void tap_bail(const char *reason, ...)
 void tap_diag(const char *message, ...)
     __attribute__ ((format (printf, 1, 2)));
 
+int tap_get_tests_run(void);
+int tap_get_tests_failed(void);
+const char *tap_get_todo(void);
+
 #define tap_ok(...) _tap_ok(__FILE__, __LINE__, __VA_ARGS__)
 #define tap_is_float(...) _tap_is_float(__FILE__, __LINE__, __VA_ARGS__)
 #define tap_is_int(...) _tap_is_int(__FILE__, __LINE__, __VA_ARGS__)
@@ -91,8 +95,6 @@ void tap_done_testing(void)
     tap_plan(_tap_tests_run);
 }
 
-/*
-
 int tap_get_tests_run(void)
 {
     return _tap_tests_run;
@@ -103,7 +105,10 @@ int tap_get_tests_failed(void)
     return _tap_tests_failed;
 }
 
-*/
+const char *_tap_get_todo(void)
+{
+    return _tap_todo;
+}
 
 void tap_todo(const char *reason)
 {
