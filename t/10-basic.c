@@ -65,10 +65,10 @@ int main(int argc, char **argv) {
 
     /* redirect output to temp file */
     ofd = mkstemp(outfile);
-    sfd = dup(fileno(stdout));
-    efd = dup(fileno(stderr));
-    dup2(ofd, fileno(stdout));
-    dup2(ofd, fileno(stderr));
+    sfd = dup(STDOUT_FILENO);
+    efd = dup(STDERR_FILENO);
+    dup2(ofd, STDOUT_FILENO);
+    dup2(ofd, STDERR_FILENO);
     close(ofd);
 
     run();
@@ -76,8 +76,8 @@ int main(int argc, char **argv) {
     /* flush and restore output */
     fflush(stdout);
     fflush(stderr);
-    dup2(sfd, fileno(stdout));
-    dup2(efd, fileno(stderr));
+    dup2(sfd, STDOUT_FILENO);
+    dup2(efd, STDERR_FILENO);
     close(sfd);
     close(efd);
 
