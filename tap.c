@@ -25,9 +25,10 @@
 #ifndef TAP_C
 #define TAP_C
 
-#include <string.h>
-#include <stdio.h>
+#include <errno.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
 
 static int _tap_tests_run = 0;
 static int _tap_tests_failed = 0;
@@ -45,6 +46,8 @@ void tap_todo(const char *reason);
 void tap_skip(int count, const char *reason, ...)
     __attribute__ ((format (printf, 2, 3)));
 void tap_bail(const char *reason, ...)
+    __attribute__ ((format (printf, 1, 2)));
+void tap_ebail(const char *reason, ...)
     __attribute__ ((format (printf, 1, 2)));
 void tap_diag(const char *message, ...)
     __attribute__ ((format (printf, 1, 2)));
@@ -133,6 +136,15 @@ void tap_bail(const char *reason, ...)
     fputs("Bail out!", _tap_output);
     _TAP_VPRINT_MSG(_tap_output, reason);
     fputc('\n', _tap_output);
+    fflush(_tap_output);
+}
+
+void tap_ebail(const char *reason, ...)
+{
+    int err_save = errno;
+    fputs("Bail out!", _tap_output);
+    _TAP_VPRINT_MSG(_tap_output, reason);
+    fprintf(_tap_output, " (%s)\n", strerror(err_save));
     fflush(_tap_output);
 }
 

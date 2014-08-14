@@ -1,7 +1,8 @@
+#include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 #include "../tap.c"
 
@@ -25,6 +26,10 @@ void test(void) {
 
     tap_bail(NULL);
     tap_bail("foo %s", "bar");
+
+    errno = ERANGE;
+    tap_ebail(NULL);
+    tap_ebail("foo %s", "bar");
 
     tap_ok(0, NULL);
     tap_ok(1, NULL);

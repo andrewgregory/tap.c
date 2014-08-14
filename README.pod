@@ -60,6 +60,11 @@ Skip tests.
 Indicate an unrecoverable error.  It is up to the caller to actually exit the
 test.
 
+=item void tap_ebail(const char *reason, ...)
+
+Identical to C<tap_bail> except the output of C<strerror(errno)> is appended to
+C<reason>.
+
 =item void tap_diag(const char *message, ...)
 
 Print a diagnostic message.  Harnesses should suppress the message for tests
