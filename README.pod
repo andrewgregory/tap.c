@@ -97,26 +97,13 @@ difference between C<got> and C<expected> must be less than C<delta>.
  #include "tap.c"
  
  int main(int argc, char **argv) {
- 	int i;
- 	struct test {
- 		const char *input;
- 		size_t max;
- 		const char *expected;
- 	} tests[] = {
- 		{ "foo", 4, "foo" },
- 		{ "foo", 3, "foo" },
- 		{ "foo", 2, "fo" },
- 	};
- 
- 	tap_plan(sizeof(tests) / sizeof(struct test));
- 	for(i = 0; i < sizeof(tests) / sizeof(struct test); ++i) {
- 		char *output = strndup(tests[i].input, tests[i].max);
- 		tap_is_str(output, tests[i].expected,
- 			"strndup(%s, %d)", tests[i].input, tests[i].max);
- 		free(output);
- 	}
-
- 	return 0;
+    tap_plan(3);
+ #define IS(got, exp) { char *c = got; tap_is_str(got, exp, #got); free(c); }
+    IS(strndup("foo", 4), "foo");
+    IS(strndup("foo", 3), "foo");
+    IS(strndup("foo", 2), "fo");
+ #undef IS
+    return tap_get_tests_failed() ? 1 : 0;
  }
 
 =head1 COPYRIGHT AND LICENSE
