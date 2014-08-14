@@ -70,6 +70,15 @@ int _tap_is_str(const char *file, int line,
         const char *got, const char *expected, const char *name, ...)
     __attribute__ ((format (printf, 5, 6)));
 
+#define _TAP_VPRINT_MSG(stream, msg) if(msg) { \
+        va_list args; \
+        va_start(args, msg); \
+        fputc(' ', stream); \
+        vfprintf(stream, msg, args); \
+        va_end(args); \
+    }
+
+
 void tap_plan(int test_count)
 {
     fprintf(_tap_output, "1..%d\n", test_count);
@@ -79,13 +88,7 @@ void tap_plan(int test_count)
 void tap_skip_all(const char *reason, ...)
 {
     fputs("1..0 # SKIP", _tap_output);
-    if(reason) {
-        va_list args;
-        va_start(args, reason);
-        fputc(' ', _tap_output);
-        vfprintf(_tap_output, reason, args);
-        va_end(args);
-    }
+    _TAP_VPRINT_MSG(_tap_output, reason);
     fputc('\n', _tap_output);
     fflush(_tap_output);
 }
@@ -119,13 +122,7 @@ void tap_skip(int count, const char *reason, ...)
 {
     while(count--) {
         fprintf(_tap_output, "ok %d # SKIP", ++_tap_tests_run);
-        if(reason) {
-            va_list args;
-            va_start(args, reason);
-            fputc(' ', _tap_output);
-            vfprintf(_tap_output, reason, args);
-            va_end(args);
-        }
+        _TAP_VPRINT_MSG(_tap_output, reason);
         fputc('\n', _tap_output);
     }
     fflush(_tap_output);
@@ -134,13 +131,7 @@ void tap_skip(int count, const char *reason, ...)
 void tap_bail(const char *reason, ...)
 {
     fputs("Bail out!", _tap_output);
-    if(reason) {
-        va_list args;
-        va_start(args, reason);
-        fputc(' ', _tap_output);
-        vfprintf(_tap_output, reason, args);
-        va_end(args);
-    }
+    _TAP_VPRINT_MSG(_tap_output, reason);
     fputc('\n', _tap_output);
     fflush(_tap_output);
 }
@@ -148,28 +139,20 @@ void tap_bail(const char *reason, ...)
 void tap_diag(const char *message, ...)
 {
     FILE *stream = _tap_todo ? _tap_todo_output : _tap_failure_output;
-    va_list args;
-    va_start(args, message);
 
-    fputs("# ", stream);
-    vfprintf(stream, message, args);
+    fputs("#", stream);
+    _TAP_VPRINT_MSG(stream, message);
     fputc('\n', stream);
     fflush(stream);
 
-    va_end(args);
 }
 
 void tap_note(const char *message, ...)
 {
-    va_list args;
-    va_start(args, message);
-
-    fputs("# ", _tap_output);
-    vfprintf(_tap_output, message, args);
+    fputs("#", _tap_output);
+    _TAP_VPRINT_MSG(_tap_output, message);
     fputc('\n', _tap_output);
     fflush(_tap_output);
-
-    va_end(args);
 }
 
 static void _tap_vok(const char *file, int line,
@@ -268,5 +251,6 @@ int _tap_is_str(const char *file, int line,
 }
 
 #undef _TAP_OK
+#undef _TAP_VPRINT_MSG
 
 #endif /* TAP_C */
