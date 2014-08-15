@@ -8,7 +8,7 @@ TESTS = 01-sanity.t 10-basic.t
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LDLIBS) -o $@
 
 check: tests
-	PATH=.:$$PATH prove $(TESTS)
+	prove .
 
 tests: $(TESTS)
 
