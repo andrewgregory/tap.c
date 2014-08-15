@@ -57,7 +57,7 @@ void run(void) {
     test();
 }
 
-int main(int argc, char **argv) {
+int main(void) {
     int sfd, efd, ofd, ret = 0;
     FILE *efile, *ofile;
     char ebuf[50], obuf[50];
