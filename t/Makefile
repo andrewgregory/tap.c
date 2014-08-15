@@ -1,4 +1,5 @@
-CFLAGS += -Wall -g -I..
+CFLAGS += -Wall -Wextra -g -I..
+
 TESTS = 01-sanity.t 10-basic.t
 
 01-sanity.t: CFLAGS += -std=c99 -pedantic -Werror
