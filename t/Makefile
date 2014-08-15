@@ -7,12 +7,12 @@ TESTS = 01-sanity.t 10-basic.t
 %.t: %.c ../tap.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LDLIBS) -o $@
 
-check: $(TESTS)
+check: tests
 	PATH=.:$$PATH prove $(TESTS)
 
 tests: $(TESTS)
 
-all: $(TESTS)
+all: tests
 
 clean:
 	$(RM) $(TESTS)
