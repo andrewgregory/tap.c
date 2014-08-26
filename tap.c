@@ -54,12 +54,16 @@ int tap_get_tests_failed(void);
 const char *tap_get_todo(void);
 
 #define tap_ok(...) _tap_ok(__FILE__, __LINE__, __VA_ARGS__)
+#define tap_vok(success, args) _tap_vok(__FILE__, __LINE__, success, args)
 #define tap_is_float(...) _tap_is_float(__FILE__, __LINE__, __VA_ARGS__)
 #define tap_is_int(...) _tap_is_int(__FILE__, __LINE__, __VA_ARGS__)
 #define tap_is_str(...) _tap_is_str(__FILE__, __LINE__, __VA_ARGS__)
 
 int _tap_ok(const char *file, int line, int success, const char *name, ...)
     __attribute__ ((format (printf, 4, 5)));
+int _tap_vok(const char *file, int line,
+        int success, const char *name, va_list args)
+    __attribute__ ((format (printf, 4, 0)));
 int _tap_is_float(const char *file, int line,
         float got, float expected, float delta, const char *name, ...)
     __attribute__ ((format (printf, 6, 7)));
@@ -155,7 +159,7 @@ void tap_note(const char *message, ...)
     fflush(_tap_output);
 }
 
-static void _tap_vok(const char *file, int line,
+int _tap_vok(const char *file, int line,
         int success, const char *name, va_list args)
 {
     const char *result;
@@ -190,6 +194,8 @@ static void _tap_vok(const char *file, int line,
         tap_diag("  Failed%s test at %s line %d.",
                 _tap_todo ? " (TODO)" : "", file, line);
     }
+
+    return success;
 }
 
 #define _TAP_OK(success, name) do { \
