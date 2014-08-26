@@ -42,6 +42,7 @@ void tap_plan(int test_count);
 void tap_skip_all(const char *reason, ...)
     __attribute__ ((format (printf, 1, 2)));
 void tap_done_testing(void);
+int tap_finish(void);
 void tap_todo(const char *reason);
 void tap_skip(int count, const char *reason, ...)
     __attribute__ ((format (printf, 2, 3)));
@@ -103,6 +104,16 @@ void tap_skip_all(const char *reason, ...)
 void tap_done_testing(void)
 {
     tap_plan(_tap_tests_run);
+}
+
+int tap_finish(void)
+{
+    if(_tap_tests_run != _tap_tests_planned) {
+        tap_diag("Looks like you planned %d tests but ran %d.",
+                _tap_tests_planned, _tap_tests_run);
+    }
+    return _tap_tests_run == _tap_tests_planned
+        && _tap_tests_failed == 0 ? 0 : 1;
 }
 
 int tap_get_testcount_planned(void)

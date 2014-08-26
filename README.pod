@@ -33,6 +33,13 @@ Skip all tests.
 Indicate the end of testing for tests without a plan.  If the number of tests
 is known, use C<tap_plan> instead.
 
+=item int tap_finish(void)
+
+Returns C<0> if all tests were run successfully, C<1> otherwise.  Additionally,
+a diagnostic message will be printed if the number of tests run does match the
+number of tests planned.  Provided as a convenience for test programs that
+should return non-zero on failure.
+
 =item void tap_todo(const char *reason)
 
 Indicate that the following tests are expected to fail.  Set to C<NULL> to
@@ -103,7 +110,7 @@ difference between C<got> and C<expected> must be less than C<delta>.
     IS(strndup("foo", 3), "foo");
     IS(strndup("foo", 2), "fo");
  #undef IS
-    return tap_get_tests_failed() ? 1 : 0;
+    return tap_finish();
  }
 
 =head1 COPYRIGHT AND LICENSE
