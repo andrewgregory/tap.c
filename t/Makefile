@@ -14,8 +14,14 @@ tests: $(TESTS)
 
 all: tests
 
+gcov: CC = gcc
+gcov: CFLAGS += -fprofile-arcs -ftest-coverage
+gcov: check
+	gcov $(TESTS)
+
 clean:
 	$(RM) $(TESTS)
 	$(RM) tmp_*
+	$(RM) *.gcov *.gcda *.gcno
 
-.PHONY: all clean check tests
+.PHONY: all clean check gcov tests
