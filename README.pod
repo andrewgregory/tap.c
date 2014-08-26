@@ -53,7 +53,7 @@ Skip tests.
      tap_ok(bar(), NULL);
  #else
      tap_skip(2, "foo and bar require BAZ");
- #endif 
+ #endif
 
 =item void tap_bail(const char *reason, ...)
 
@@ -95,7 +95,7 @@ difference between C<got> and C<expected> must be less than C<delta>.
  #include <string.h>
 
  #include "tap.c"
- 
+
  int main(int argc, char **argv) {
     tap_plan(3);
  #define IS(got, exp) { char *c = got; tap_is_str(got, exp, #got); free(c); }
