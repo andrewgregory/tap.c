@@ -112,7 +112,7 @@ int tap_get_tests_failed(void)
     return _tap_tests_failed;
 }
 
-const char *_tap_get_todo(void)
+const char *tap_get_todo(void)
 {
     return _tap_todo;
 }
