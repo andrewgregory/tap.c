@@ -49,8 +49,8 @@ void tap_bail(const char *reason, ...)
 void tap_diag(const char *message, ...)
     __attribute__ ((format (printf, 1, 2)));
 
-int tap_get_tests_run(void);
-int tap_get_tests_failed(void);
+int tap_get_testcount_run(void);
+int tap_get_testcount_failed(void);
 const char *tap_get_todo(void);
 
 #define tap_ok(...) _tap_ok(__FILE__, __LINE__, __VA_ARGS__)
@@ -102,12 +102,12 @@ void tap_done_testing(void)
     tap_plan(_tap_tests_run);
 }
 
-int tap_get_tests_run(void)
+int tap_get_testcount_run(void)
 {
     return _tap_tests_run;
 }
 
-int tap_get_tests_failed(void)
+int tap_get_testcount_failed(void)
 {
     return _tap_tests_failed;
 }
