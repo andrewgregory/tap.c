@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+static int _tap_tests_planned = 0;
 static int _tap_tests_run = 0;
 static int _tap_tests_failed = 0;
 static const char *_tap_todo = NULL;
@@ -49,6 +50,7 @@ void tap_bail(const char *reason, ...)
 void tap_diag(const char *message, ...)
     __attribute__ ((format (printf, 1, 2)));
 
+int tap_get_testcount_planned(void);
 int tap_get_testcount_run(void);
 int tap_get_testcount_failed(void);
 const char *tap_get_todo(void);
@@ -85,6 +87,7 @@ int _tap_is_str(const char *file, int line,
 
 void tap_plan(int test_count)
 {
+    _tap_tests_planned = test_count;
     fprintf(_tap_output, "1..%d\n", test_count);
     fflush(_tap_output);
 }
@@ -100,6 +103,11 @@ void tap_skip_all(const char *reason, ...)
 void tap_done_testing(void)
 {
     tap_plan(_tap_tests_run);
+}
+
+int tap_get_testcount_planned(void)
+{
+    return _tap_tests_planned;
 }
 
 int tap_get_testcount_run(void)
