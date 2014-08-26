@@ -185,7 +185,7 @@ static void _tap_vok(const char *file, int line,
     fputc('\n', _tap_output);
     fflush(_tap_output);
 
-    if(!success) {
+    if(!success && file) {
         /* TODO add test name if available */
         tap_diag("  Failed%s test at %s line %d.",
                 _tap_todo ? " (TODO)" : "", file, line);
