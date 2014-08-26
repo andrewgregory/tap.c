@@ -5,6 +5,7 @@ tap.c - lightweight TAP output generator for C/C++ test suites
 =head1 SYNOPSIS
 
 tap.c is intended to make writing TAP-based tests in C/C++ as easy as possible.
+It consists of a single file that can be included directly in test programs.
 The resulting test programs can be used with test harnesses such as
 L<AutoMake|https://www.gnu.org/software/automake/manual/html_node/Using-the-TAP-test-protocol.html>
 and L<prove>.
