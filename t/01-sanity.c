@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "../tap.c"
 
 /* just verify the library compiles */
