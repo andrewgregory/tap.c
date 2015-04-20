@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Andrew Gregory <andrew.gregory.8@gmail.com>
+ * Copyright 2014-2015 Andrew Gregory <andrew.gregory.8@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -25,9 +25,11 @@
 #ifndef TAP_C
 #define TAP_C
 
-#include <string.h>
-#include <stdio.h>
+#include <inttypes.h>
 #include <stdarg.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 static int _tap_tests_planned = 0;
 static int _tap_tests_run = 0;
@@ -71,7 +73,7 @@ int _tap_is_float(const char *file, int line,
         float got, float expected, float delta, const char *name, ...)
     __attribute__ ((format (printf, 6, 7)));
 int _tap_is_int(const char *file, int line,
-        int got, int expected, const char *name, ...)
+        intmax_t got, intmax_t expected, const char *name, ...)
     __attribute__ ((format (printf, 5, 6)));
 int _tap_is_str(const char *file, int line,
         const char *got, const char *expected, const char *name, ...)
@@ -247,13 +249,13 @@ int _tap_is_float(const char *file, int line,
 }
 
 int _tap_is_int(const char *file, int line,
-        int got, int expected, const char *name, ...)
+        intmax_t got, intmax_t expected, const char *name, ...)
 {
     int match = got == expected;
     _TAP_OK(match, name);
     if(!match) {
-        tap_diag("         got: '%d'", got);
-        tap_diag("    expected: '%d'", expected);
+        tap_diag("         got: '%" PRIdMAX "'", got);
+        tap_diag("    expected: '%" PRIdMAX "'", expected);
     }
     return match;
 }

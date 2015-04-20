@@ -190,7 +190,7 @@ difference between C<got> and C<expected> must be less than C<delta>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2014 Andrew Gregory <andrew.gregory.8@gmail.com>
+Copyright 2014-2015 Andrew Gregory <andrew.gregory.8@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
