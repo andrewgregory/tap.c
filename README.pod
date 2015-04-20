@@ -212,6 +212,40 @@ SOFTWARE.
 
 =head1 SEE ALSO
 
-L<http://podwiki.hexten.net/TAP/TAP.html>, L<prove>, L<Test::More>
-
 Project URL: L<http://github.com/andrewgregory/tap.c>
+
+TAP Specification: L<http://testanything.org/>
+
+TAP Producers:
+
+=over
+
+=item L<Test::More>
+
+=item L<http://www.eyrie.org/~eagle/software/c-tap-harness/>
+
+=item L<https://github.com/f0rk/libtap>
+
+=item L<https://github.com/kawamuray/ctap>
+
+=item L<https://github.com/lpsantil/picotap>
+
+=item L<https://github.com/willemt/cutest>
+
+=item L<https://github.com/zorgnax/libtap>
+
+=item L<https://github.com/Leont/libtap--> (C++)
+
+=back
+
+TAP Consumers:
+
+=over
+
+=item L<prove>
+
+=item L<http://www.eyrie.org/~eagle/software/c-tap-harness/>
+
+=item L<https://github.com/chr15p/tap-harness>
+
+=back
