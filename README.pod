@@ -70,6 +70,12 @@ Skip tests.
 Indicate an unrecoverable error.  It is up to the caller to actually exit the
 test.
 
+=item void tap_assert(int condition)
+
+If C<condition> is false C<tap_bail> will be called with an appropriate error
+message and the test program will immediately exit.  Useful for performing test
+setup.
+
 =item void tap_diag(const char *message, ...)
 
 Print a diagnostic message.  Harnesses should suppress the message for tests

@@ -58,6 +58,8 @@ int tap_get_testcount_run(void);
 int tap_get_testcount_failed(void);
 const char *tap_get_todo(void);
 
+#define tap_assert(x) if(!(x)) { tap_bail("ASSERT FAILED: '%s'", #x); exit(1); }
+
 #define tap_ok(...) _tap_ok(__FILE__, __LINE__, __VA_ARGS__)
 #define tap_vok(success, args) _tap_vok(__FILE__, __LINE__, success, args)
 #define tap_is_float(...) _tap_is_float(__FILE__, __LINE__, __VA_ARGS__)
