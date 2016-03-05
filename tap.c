@@ -29,6 +29,7 @@
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 static int _tap_tests_planned = 0;
@@ -39,6 +40,18 @@ static const char *_tap_todo = NULL;
 #define _tap_output stdout
 #define _tap_failure_output stderr
 #define _tap_todo_output stdout
+
+#ifndef TAP_EXIT_SUCCESS
+#define TAP_EXIT_SUCCESS EXIT_SUCCESS
+#endif
+
+#ifndef TAP_EXIT_FAILURE
+#define TAP_EXIT_FAILURE EXIT_FAILURE
+#endif
+
+#ifndef TAP_EXIT_ASSERT
+#define TAP_EXIT_ASSERT TAP_EXIT_FAILURE
+#endif
 
 void tap_plan(int test_count);
 void tap_skip_all(const char *reason, ...)
@@ -60,7 +73,8 @@ int tap_get_testcount_run(void);
 int tap_get_testcount_failed(void);
 const char *tap_get_todo(void);
 
-#define tap_assert(x) if(!(x)) { tap_bail("ASSERT FAILED: '%s'", #x); exit(1); }
+#define tap_assert(x) \
+    if(!(x)) { tap_bail("ASSERT FAILED: '%s'", #x); exit(TAP_EXIT_ASSERT); }
 
 #define tap_ok(...) _tap_ok(__FILE__, __LINE__, __VA_ARGS__)
 #define tap_vok(success, args) _tap_vok(__FILE__, __LINE__, success, args)
@@ -120,7 +134,7 @@ int tap_finish(void)
                 _tap_tests_planned, _tap_tests_run);
     }
     return _tap_tests_run == _tap_tests_planned
-        && _tap_tests_failed == 0 ? 0 : 1;
+        && _tap_tests_failed == 0 ? TAP_EXIT_SUCCESS : TAP_EXIT_FAILURE;
 }
 
 int tap_get_testcount_planned(void)
