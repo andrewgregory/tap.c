@@ -52,6 +52,8 @@ void tap_bail(const char *reason, ...)
     __attribute__ ((format (printf, 1, 2)));
 void tap_diag(const char *message, ...)
     __attribute__ ((format (printf, 1, 2)));
+void tap_note(const char *message, ...)
+    __attribute__ ((format (printf, 1, 2)));
 
 int tap_get_testcount_planned(void);
 int tap_get_testcount_run(void);
