@@ -74,7 +74,7 @@ int _tap_vok(const char *file, int line,
         int success, const char *name, va_list args)
     __attribute__ ((format (printf, 4, 0)));
 int _tap_is_float(const char *file, int line,
-        float got, float expected, float delta, const char *name, ...)
+        double got, double expected, double delta, const char *name, ...)
     __attribute__ ((format (printf, 6, 7)));
 int _tap_is_int(const char *file, int line,
         intmax_t got, intmax_t expected, const char *name, ...)
@@ -238,9 +238,9 @@ int _tap_ok(const char *file, int line,
 }
 
 int _tap_is_float(const char *file, int line,
-        float got, float expected, float delta, const char *name, ...)
+        double got, double expected, double delta, const char *name, ...)
 {
-    float diff = (expected > got ? expected - got : got - expected);
+    double diff = (expected > got ? expected - got : got - expected);
     int match = diff < delta;
     _TAP_OK(match, name);
     if(!match) {
