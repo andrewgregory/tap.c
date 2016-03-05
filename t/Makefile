@@ -1,4 +1,6 @@
-CFLAGS += -Wall -Wextra -g -I..
+CFLAGS += -Wall -Wextra -g
+
+override CPPFLAGS += -I..
 
 TESTS = 01-sanity.t 10-basic.t
 
