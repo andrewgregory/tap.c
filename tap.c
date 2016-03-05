@@ -101,8 +101,9 @@ void tap_plan(int test_count)
 
 void tap_skip_all(const char *reason, ...)
 {
+    FILE *stream = _tap_output;
     fputs("1..0 # SKIP", _tap_output);
-    TAP_VPRINT_MSG(_tap_output, reason);
+    TAP_VPRINT_MSG(stream, reason);
     fputc('\n', _tap_output);
     fflush(_tap_output);
 }
@@ -149,9 +150,10 @@ void tap_todo(const char *reason)
 
 void tap_skip(int count, const char *reason, ...)
 {
+    FILE *stream = _tap_output;
     while(count--) {
         fprintf(_tap_output, "ok %d # SKIP", ++_tap_tests_run);
-        TAP_VPRINT_MSG(_tap_output, reason);
+        TAP_VPRINT_MSG(stream, reason);
         fputc('\n', _tap_output);
     }
     fflush(_tap_output);
@@ -159,8 +161,9 @@ void tap_skip(int count, const char *reason, ...)
 
 void tap_bail(const char *reason, ...)
 {
+    FILE *stream = _tap_output;
     fputs("Bail out!", _tap_output);
-    TAP_VPRINT_MSG(_tap_output, reason);
+    TAP_VPRINT_MSG(stream, reason);
     fputc('\n', _tap_output);
     fflush(_tap_output);
 }
@@ -178,8 +181,9 @@ void tap_diag(const char *message, ...)
 
 void tap_note(const char *message, ...)
 {
+    FILE *stream = _tap_output;
     fputs("#", _tap_output);
-    TAP_VPRINT_MSG(_tap_output, message);
+    TAP_VPRINT_MSG(stream, message);
     fputc('\n', _tap_output);
     fflush(_tap_output);
 }
