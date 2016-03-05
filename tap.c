@@ -83,7 +83,7 @@ int _tap_is_str(const char *file, int line,
         const char *got, const char *expected, const char *name, ...)
     __attribute__ ((format (printf, 5, 6)));
 
-#define _TAP_VPRINT_MSG(stream, msg) if(msg) { \
+#define TAP_VPRINT_MSG(stream, msg) if(msg) { \
         va_list args; \
         va_start(args, msg); \
         fputc(' ', stream); \
@@ -102,7 +102,7 @@ void tap_plan(int test_count)
 void tap_skip_all(const char *reason, ...)
 {
     fputs("1..0 # SKIP", _tap_output);
-    _TAP_VPRINT_MSG(_tap_output, reason);
+    TAP_VPRINT_MSG(_tap_output, reason);
     fputc('\n', _tap_output);
     fflush(_tap_output);
 }
@@ -151,7 +151,7 @@ void tap_skip(int count, const char *reason, ...)
 {
     while(count--) {
         fprintf(_tap_output, "ok %d # SKIP", ++_tap_tests_run);
-        _TAP_VPRINT_MSG(_tap_output, reason);
+        TAP_VPRINT_MSG(_tap_output, reason);
         fputc('\n', _tap_output);
     }
     fflush(_tap_output);
@@ -160,7 +160,7 @@ void tap_skip(int count, const char *reason, ...)
 void tap_bail(const char *reason, ...)
 {
     fputs("Bail out!", _tap_output);
-    _TAP_VPRINT_MSG(_tap_output, reason);
+    TAP_VPRINT_MSG(_tap_output, reason);
     fputc('\n', _tap_output);
     fflush(_tap_output);
 }
@@ -170,7 +170,7 @@ void tap_diag(const char *message, ...)
     FILE *stream = _tap_todo ? _tap_todo_output : _tap_failure_output;
 
     fputs("#", stream);
-    _TAP_VPRINT_MSG(stream, message);
+    TAP_VPRINT_MSG(stream, message);
     fputc('\n', stream);
     fflush(stream);
 
@@ -179,7 +179,7 @@ void tap_diag(const char *message, ...)
 void tap_note(const char *message, ...)
 {
     fputs("#", _tap_output);
-    _TAP_VPRINT_MSG(_tap_output, message);
+    TAP_VPRINT_MSG(_tap_output, message);
     fputc('\n', _tap_output);
     fflush(_tap_output);
 }
@@ -223,7 +223,7 @@ int _tap_vok(const char *file, int line,
     return success;
 }
 
-#define _TAP_OK(success, name) do { \
+#define TAP_OK(success, name) do { \
         va_list args; \
         va_start(args, name); \
         _tap_vok(file, line, success, name, args); \
@@ -233,7 +233,7 @@ int _tap_vok(const char *file, int line,
 int _tap_ok(const char *file, int line,
         int success, const char *name, ...)
 {
-    _TAP_OK(success, name);
+    TAP_OK(success, name);
     return success;
 }
 
@@ -242,7 +242,7 @@ int _tap_is_float(const char *file, int line,
 {
     double diff = (expected > got ? expected - got : got - expected);
     int match = diff < delta;
-    _TAP_OK(match, name);
+    TAP_OK(match, name);
     if(!match) {
         tap_diag("         got: '%f'", got);
         tap_diag("    expected: '%f'", expected);
@@ -256,7 +256,7 @@ int _tap_is_int(const char *file, int line,
         intmax_t got, intmax_t expected, const char *name, ...)
 {
     int match = got == expected;
-    _TAP_OK(match, name);
+    TAP_OK(match, name);
     if(!match) {
         tap_diag("         got: '%" PRIdMAX "'", got);
         tap_diag("    expected: '%" PRIdMAX "'", expected);
@@ -273,7 +273,7 @@ int _tap_is_str(const char *file, int line,
     } else {
         match = (got == expected);
     }
-    _TAP_OK(match, name);
+    TAP_OK(match, name);
     if(!match) {
         tap_diag("         got: '%s'", got);
         tap_diag("    expected: '%s'", expected);
@@ -281,7 +281,7 @@ int _tap_is_str(const char *file, int line,
     return match;
 }
 
-#undef _TAP_OK
-#undef _TAP_VPRINT_MSG
+#undef TAP_OK
+#undef TAP_VPRINT_MSG
 
 #endif /* TAP_C */
