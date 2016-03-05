@@ -16,6 +16,10 @@ tests: $(TESTS)
 
 all: tests
 
+Weverything: CC = clang
+Weverything: CFLAGS += -Weverything
+Weverything: check
+
 gcov: CC = gcc
 gcov: CFLAGS += -fprofile-arcs -ftest-coverage
 gcov: check
@@ -26,4 +30,4 @@ clean:
 	$(RM) tmp_*
 	$(RM) *.gcov *.gcda *.gcno
 
-.PHONY: all clean check gcov tests
+.PHONY: all clean check gcov tests Weverything
