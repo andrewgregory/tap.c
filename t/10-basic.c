@@ -5,10 +5,10 @@
 
 #include "../tap.c"
 
-char outfile[] = "tmp_10-basic_XXXXXX";
-char expfile[] = "expected/10-basic.t.out";
+static char outfile[] = "tmp_10-basic_XXXXXX";
+static char expfile[] = "expected/10-basic.t.out";
 
-void test(void) {
+static void test(void) {
     tap_plan(0);
     tap_plan(1);
     tap_plan(2);
@@ -51,7 +51,7 @@ void test(void) {
     tap_done_testing();
 }
 
-void run(void) {
+static void run(void) {
     test();
     tap_todo("FOO TODO");
     test();
